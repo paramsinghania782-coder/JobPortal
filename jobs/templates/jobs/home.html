@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobHub | Find Your Future</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #3b82f6;
+            --bg-light: #f8fafc;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Navbar - Clean White */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        .nav-link { color: var(--primary) !important; font-weight: 500; transition: 0.3s; }
+        .nav-link:hover { color: var(--accent) !important; }
+
+        /* Hero Section - Soft Light Gradient */
+        .hero-section {
+            padding: 120px 0 80px;
+            background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+            position: relative;
+        }
+
+        .hero-title {
+            background: linear-gradient(to right, #2563eb, #9333ea);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        /* Modern Search Bar (Light Mode) */
+        .search-container {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 50px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+        .search-container:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+        .search-input {
+            border: none; color: var(--text-dark);
+            padding: 10px 20px; flex: 1; outline: none; background: transparent;
+        }
+        .search-btn {
+            background: var(--accent); color: white; border-radius: 40px;
+            padding: 10px 30px; border: none; font-weight: 600; transition: 0.3s;
+        }
+        .search-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3); }
+
+        /* Job Cards - White & Clean */
+        .job-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .job-card:hover {
+            transform: translateY(-7px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .company-logo {
+            width: 50px; height: 50px; background: #eff6ff;
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; color: var(--accent); font-weight: bold;
+        }
+
+        .badge-tag {
+            background: #f1f5f9; color: var(--text-muted);
+            padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 500;
+        }
+
+        .btn-apply {
+            background: white; border: 2px solid var(--accent); color: var(--accent);
+            width: 100%; border-radius: 12px; padding: 10px; font-weight: 600; transition: 0.3s;
+        }
+        .btn-apply:hover { background: var(--accent); color: white; }
+
+        .footer { background: white; padding: 40px 0; margin-top: 50px; color: var(--text-muted); border-top: 1px solid #e2e8f0; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-4" href="/">
+                <i class="fas fa-layer-group text-primary"></i> Job<span class="text-primary">Hub</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+
+                    {% if user.is_authenticated %}
+                        {% if user.userprofile.role == 'recruiter' %}
+                            <li class="nav-item ms-2"><a href="{% url 'post_job' %}" class="btn btn-outline-primary btn-sm rounded-pill px-3">Post Job</a></li>
+                            <li class="nav-item ms-2"><a href="{% url 'recruiter_dashboard' %}" class="btn btn-primary btn-sm rounded-pill px-3">Dashboard</a></li>
+                        {% elif user.userprofile.role == 'candidate' %}
+                            <li class="nav-item ms-2"><a href="{% url 'candidate_dashboard' %}" class="btn btn-primary btn-sm rounded-pill px-3">My Applications</a></li>
+                        {% endif %}
+                        <li class="nav-item ms-3 text-dark fw-bold small">Hi, {{ user.username }}</li>
+                        <li class="nav-item ms-2">
+                            <form action="{% url 'logout' %}" method="post">{% csrf_token %}<button class="btn btn-sm btn-outline-danger fw-bold rounded-pill">Logout</button></form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item ms-3"><a href="{% url 'login' %}" class="btn btn-primary rounded-pill px-4">Login</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-section text-center">
+        <div class="container" data-aos="fade-up">
+            <h1 class="display-3 fw-bold mb-3 hero-title">Find Your Dream Career</h1>
+            <p class="lead text-muted mb-5">Connecting top talent with the world's best companies.</p>
+
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <form action="{% url 'home' %}" method="GET" class="d-flex w-75 position-relative">
+    <div class="input-group">
+        <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-muted"></i></span>
+
+        <input type="text" name="q" id="searchInput" class="form-control border-start-0 border-end-0 ps-0"
+               placeholder="Search jobs by title, skill or company..."
+               value="{{ query|default:'' }}" autocomplete="off">
+
+        <span class="input-group-text bg-white border-start-0" id="clearBtn" style="cursor: pointer; display: none;">
+            <i class="fas fa-times text-muted"></i>
+        </span>
+
+        <button class="btn btn-primary px-4 fw-bold" type="submit">Search</button>
+    </div>
+</form>
+
+<script>
+    const searchInput = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearBtn');
+
+    // Show 'X' when typing
+    searchInput.addEventListener('input', function() {
+        if (this.value.length > 0) {
+            clearBtn.style.display = 'block';
+        } else {
+            clearBtn.style.display = 'none';
+        }
+    });
+
+    // Clear text when 'X' is clicked
+    clearBtn.addEventListener('click', function() {
+        searchInput.value = '';
+        clearBtn.style.display = 'none';
+        searchInput.focus();
+    });
+
+    // Check on page load (agar search kiya hua hai to X dikhe)
+    if (searchInput.value.length > 0) {
+        clearBtn.style.display = 'block';
+    }
+</script>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4" data-aos="fade-right">
+            <h3 class="fw-bold text-dark">
+                {% if query %} Search Results for "{{ query }}" {% else %} Latest Opportunities {% endif %}
+            </h3>
+            <span class="badge bg-light text-dark border px-3 py-2 rounded-pill">{{ jobs.count }} Jobs Found</span>
+        </div>
+
+        <div class="row">
+            {% for job in jobs %}
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="job-card h-100 d-flex flex-column">
+                    <div class="d-flex align-items-start mb-3">
+                        <div class="company-logo me-3">{{ job.company|slice:":1" }}</div>
+                        <div>
+                            <h5 class="fw-bold text-dark mb-1">{{ job.title }}</h5>
+                            <p class="text-muted small mb-0">{{ job.company }}</p>
+                        </div>
+                    </div>
+
+                    <p class="text-muted small mb-3 flex-grow-1">{{ job.description|truncatewords:20 }}</p>
+
+                    <div class="d-flex flex-wrap gap-2 mb-4">
+                        <span class="badge-tag"><i class="fas fa-map-marker-alt me-1"></i> {{ job.location }}</span>
+                        <span class="badge-tag text-success bg-success-subtle"><i class="fas fa-wallet me-1"></i> ₹{{ job.salary }}</span>
+                    </div>
+
+                    {% if user.is_authenticated and user.userprofile.role == 'recruiter' %}
+                        <button class="btn btn-secondary w-100 rounded-3 small" disabled>Candidate View Only</button>
+                    {% else %}
+                        <a href="{% url 'job_detail' job.id %}" class="btn-apply text-center text-decoration-none">View Details & Apply</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <div class="p-5 bg-white rounded-4 shadow-sm border">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h4 class="text-dark">No jobs found.</h4>
+                    <p class="text-muted">Try searching for something else or come back later.</p>
+                    <a href="/" class="btn btn-outline-primary mt-2">Clear Search</a>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="d-flex justify-content-center mt-5">
+        <nav aria-label="Page navigation">
+            <ul class="pagination shadow-sm">
+
+                {% if jobs.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ jobs.previous_page_number }}{% if query %}&q={{ query }}{% endif %}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo; Previous</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">&laquo; Previous</span></li>
+                {% endif %}
+
+                <li class="page-item active">
+                    <span class="page-link">
+                        Page {{ jobs.number }} of {{ jobs.paginator.num_pages }}
+                    </span>
+                </li>
+
+                {% if jobs.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ jobs.next_page_number }}{% if query %}&q={{ query }}{% endif %}" aria-label="Next">
+                            <span aria-hidden="true">Next &raquo;</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">Next &raquo;</span></li>
+                {% endif %}
+
+            </ul>
+        </nav>
+    </div>
+    </div>
+
+
+        </div>
+    </div>
+
+    <section class="py-5 bg-white border-top border-bottom overflow-hidden">
+    <div class="container-fluid">
+        <h6 class="text-center text-uppercase text-muted fw-bold mb-5" style="letter-spacing: 3px; font-size: 0.8rem;">
+            Empowering Careers at Global Leaders
+        </h6>
+        
+        <div class="logos-slider">
+            <div class="logos-track">
+                <div class="logos-set">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Tata_Consultancy_Services_old_logo.svg/960px-Tata_Consultancy_Services_old_logo.svg.png?_=20210617123944" alt="TCS">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg" alt="Meta">
+                    <img src="https://www.adobe.com/federal/assets/svgs/adobe-logo.svg" alt="Adobe">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="FB">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" alt="IBM">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" style="height: 100px;">
+                </div>
+                
+                <div class="logos-set">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Amazon">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Tata_Consultancy_Services_old_logo.svg/960px-Tata_Consultancy_Services_old_logo.svg.png?_=20210617123944" alt="TCS">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg" alt="Meta">
+                    <img src="https://www.adobe.com/federal/assets/svgs/adobe-logo.svg" alt="Adobe">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png" alt="FB">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" alt="IBM">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple" style="height: 100px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section class="py-5 bg-light overflow-hidden">
+    <div class="container-fluid">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Success Stories</h2>
+            <p class="text-muted">Join the thousands who found success via JobHub</p>
+        </div>
+
+        <div class="testimonial-slider">
+            <div class="testimonial-track">
+                
+                <div class="testimonial-set">
+                    <div class="testimonial-card">
+                        <div class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p>"JobHub simplifies the job hunt like no other platform. I got hired at Meta!"</p>
+                        <div class="user-info">
+                            <img src="https://i.pravatar.cc/100?u=11" alt="User">
+                            <div><strong>Amit Verma</strong><br><small>DevOps Engineer</small></div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p>"The best UI for tracking applications. Found my dream role at Adobe."</p>
+                        <div class="user-info">
+                            <img src="https://i.pravatar.cc/100?u=12" alt="User">
+                            <div><strong>Sneha Kapoor</strong><br><small>UI/UX Designer</small></div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p>"Reliable and authentic job listings. Highly recommended for freshers."</p>
+                        <div class="user-info">
+                            <img src="https://i.pravatar.cc/100?u=13" alt="User">
+                            <div><strong>Rohan Das</strong><br><small>Data Analyst</small></div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p>"Hiring was never this easy. Found 5 top-tier candidates in a week."</p>
+                        <div class="user-info">
+                            <img src="https://i.pravatar.cc/100?u=14" alt="User">
+                            <div><strong>Vikram Singh</strong><br><small>HR @ IBM</small></div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p>"The premium feel of JobHub reflects in the quality of companies here."</p>
+                        <div class="user-info">
+                            <img src="https://i.pravatar.cc/100?u=15" alt="User">
+                            <div><strong>Anuj Mehra</strong><br><small>Product Manager</small></div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p>"A clean and user-friendly job portal that makes searching and applying for jobs quick and hassle-free."</p>
+                        <div class="user-info">
+                            <img src="https://images.unsplash.com/photo-1583692331507-fc0bd348695d?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWFuJTIwZmFjZXxlbnwwfHwwfHx8MA%3D%3D" alt="User">
+                            <div><strong>Ankush shukla</strong><br><small>Consultant</small></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-set">
+                    <div class="testimonial-card">
+                        <div class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p>"JobHub simplifies the job hunt like no other platform. I got hired at Meta!"</p>
+                        <div class="user-info">
+                            <img src="https://i.pravatar.cc/100?u=11" alt="User">
+                            <div><strong>Amit Verma</strong><br><small>DevOps Engineer</small></div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p>"The best UI for tracking applications. Found my dream role at Adobe."</p>
+                        <div class="user-info">
+                            <img src="https://i.pravatar.cc/100?u=12" alt="User">
+                            <div><strong>Sneha Kapoor</strong><br><small>UI/UX Designer</small></div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p>"Reliable and authentic job listings. Highly recommended for freshers."</p>
+                        <div class="user-info">
+                            <img src="https://i.pravatar.cc/100?u=13" alt="User">
+                            <div><strong>Rohan Das</strong><br><small>Data Analyst</small></div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p>"Hiring was never this easy. Found 5 top-tier candidates in a week."</p>
+                        <div class="user-info">
+                            <img src="https://i.pravatar.cc/100?u=14" alt="User">
+                            <div><strong>Vikram Singh</strong><br><small>HR @ IBM</small></div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p>"The premium feel of JobHub reflects in the quality of companies here."</p>
+                        <div class="user-info">
+                            <img src="https://i.pravatar.cc/100?u=15" alt="User">
+                            <div><strong>Anuj Mehra</strong><br><small>Product Manager</small></div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                        <p>"A clean and user-friendly job portal that makes searching and applying for jobs quick and hassle-free."</p>
+                        <div class="user-info">
+                            <img src="https://images.unsplash.com/photo-1583692331507-fc0bd348695d?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWFuJTIwZmFjZXxlbnwwfHwwfHx8MA%3D%3D" alt="User">
+                            <div><strong>Ankush shukla</strong><br><small>Consultant</small></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+    <style>
+
+.logos-slider {
+    position: relative;
+    width: 100%;
+    overflow: hidden; 
+}
+
+.logos-track {
+    display: flex;
+    width: max-content;
+    animation: scrollContinuous 30s linear infinite;
+}
+
+.logos-set {
+    display: flex;
+    align-items: center;
+    gap: 80px; 
+    padding-right: 80px; 
+}
+
+.logos-set img {
+    width: 150px;
+    filter: grayscale(100%);
+    opacity: 0.6;
+    transition: 0.3s;
+    object-fit: contain;
+}
+
+.logos-set img:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+/*Testimonial Slider Styling */
+.testimonial-slider {
+    width: 100%;
+    padding: 20px 0;
+    overflow: hidden;
+}
+
+.testimonial-track {
+    display: flex;
+    width: max-content;
+    animation: scrollContinuous 40s linear infinite;
+}
+
+.testimonial-set {
+    display: flex;
+    gap: 30px; 
+    padding-right: 30px; 
+}
+
+.testimonial-card {
+    width: 350px;
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    flex-shrink: 0;
+}
+
+.star-rating { color: #ffc107; margin-bottom: 15px; }
+.user-info { display: flex; align-items: center; margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px; }
+.user-info img { width: 45px; height: 45px; border-radius: 50%; margin-right: 15px; }
+
+
+@keyframes scrollContinuous {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%); 
+    }
+}
+
+/* Pause on hover */
+.logos-track:hover, .testimonial-track:hover {
+    animation-play-state: paused;
+}
+    </style>
+
+
+<footer class="bg-dark text-white mt-5 pt-5 pb-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-4 mb-4 pe-lg-5">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-layer-group text-primary"></i> JobHub</h5>
+                    <p class="small text-secondary lh-lg">The most trusted global platform connecting exceptional talent with world-class organizations. Your career journey starts here.</p>
+                </div>
+                <div class="col-6 col-md-4 mb-4">
+                    <h5 class="mb-3 fs-6 text-uppercase letter-spacing-2 text-white-50">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'home' %}" class="text-decoration-none text-secondary hover-white">Home</a></li>
+                        <li class="mb-2"><a href="{% url 'about' %}" class="text-decoration-none text-secondary hover-white">About Us</a></li>
+                        <li class="mb-2"><a href="{% url 'contact' %}" class="text-decoration-none text-secondary hover-white">Contact Support</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-4 mb-4">
+                    <h5 class="mb-3 fs-6 text-uppercase letter-spacing-2 text-white-50">Legal</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'privacy' %}" class="text-decoration-none text-secondary hover-white">Privacy Policy</a></li>
+                        <li class="mb-2"><a href="{% url 'terms' %}" class="text-decoration-none text-secondary hover-white">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-secondary my-4">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <div class="small text-secondary">&copy; 2026 JobHub. All rights reserved.</div>
+                <div class="text-secondary fs-5">
+                    <a href="#" class="text-secondary text-decoration-none me-3"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="text-secondary text-decoration-none me-3"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-secondary text-decoration-none"><i class="fab fa-facebook"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 800, once: true });
+    </script>
+</body>
+</html>
+
+

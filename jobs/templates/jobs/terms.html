@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - JobHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body { 
+            background-color: #f8fafc; 
+            font-family: 'Inter', sans-serif; 
+            color: #334155;
+            line-height: 1.7;
+        }
+
+        /* Navbar & Typography */
+        .text-gradient {
+            background: linear-gradient(135deg, #2563eb, #0ea5e9);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+        
+        /* Header Banner */
+        .legal-header {
+            background: linear-gradient(to bottom, #ffffff, #f8fafc);
+            padding: 50px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        /* Content Container */
+        .legal-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            padding: 40px;
+        }
+
+        /* Typography within Document */
+        .legal-section-title {
+            color: #0f172a;
+            font-weight: 700;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+        .legal-text {
+            color: #475569;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Table of Contents Sidebar */
+        .toc-sidebar {
+            position: sticky;
+            top: 100px;
+            background: transparent;
+            border-right: 2px solid #e2e8f0;
+            padding-right: 20px;
+        }
+        .toc-link {
+            display: block;
+            color: #64748b;
+            text-decoration: none;
+            padding: 8px 0;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .toc-link:hover, .toc-link.active {
+            color: #2563eb;
+            transform: translateX(5px);
+        }
+
+        /* Updates highlight */
+        .last-updated {
+            display: inline-block;
+            background: #eff6ff;
+            color: #2563eb;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-4" href="{% url 'home' %}">
+                <i class="fas fa-layer-group text-primary"></i> Job<span class="text-primary">Hub</span>
+            </a>
+            <div class="ms-auto">
+                <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-sm rounded-pill px-4 fw-semibold">Back to Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="legal-header text-center">
+        <div class="container">
+            <h1 class="display-5 fw-bold mb-3 text-dark">Terms of <span class="text-gradient">Service</span></h1>
+            <p class="lead text-muted col-lg-6 mx-auto">Please read these terms carefully before using the JobHub platform and services.</p>
+        </div>
+    </section>
+
+    <div class="container my-5">
+        <div class="row g-5">
+            
+            <div class="col-lg-3 d-none d-lg-block">
+                <div class="toc-sidebar">
+                    <h6 class="text-uppercase fw-bold text-dark mb-3 small letter-spacing-1">Contents</h6>
+                    <nav>
+                        <a href="#introduction" class="toc-link">1. Introduction</a>
+                        <a href="#user-accounts" class="toc-link">2. User Accounts</a>
+                        <a href="#job-seekers" class="toc-link">3. Job Seekers</a>
+                        <a href="#employers" class="toc-link">4. Employers & Recruiters</a>
+                        <a href="#intellectual-property" class="toc-link">5. Intellectual Property</a>
+                        <a href="#liability" class="toc-link">6. Limitation of Liability</a>
+                        <a href="#termination" class="toc-link">7. Termination</a>
+                        <a href="#governing-law" class="toc-link">8. Governing Law</a>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="legal-card">
+                    <div class="last-updated"><i class="far fa-clock me-2"></i>Last Updated: March 29, 2026</div>
+                    
+                    <div id="introduction">
+                        <h4 class="fw-bold text-dark mb-3">1. Introduction</h4>
+                        <p class="legal-text">Welcome to JobHub. These Terms of Service, govern your relationship with the JobHub website and platform operated by JobHub Inc. . By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the terms, then you may not access the Service.</p>
+                    </div>
+
+                    <div id="user-accounts">
+                        <h4 class="legal-section-title">2. User Accounts</h4>
+                        <p class="legal-text">When you create an account with us, you must provide information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account.</p>
+                        <p class="legal-text">You are responsible for safeguarding the password that you use to access the Service and for any activities or actions under your password. You agree not to disclose your password to any third party.</p>
+                    </div>
+
+                    <div id="job-seekers">
+                        <h4 class="legal-section-title">3. For Job Seekers</h4>
+                        <p class="legal-text">By uploading your resume or creating a profile on JobHub, you agree that:</p>
+                        <ul class="legal-text">
+                            <li>All information provided regarding your education, experience, and identity is truthful and accurate.</li>
+                            <li>You authorize JobHub to share your professional profile with verified employers and recruiters using our platform.</li>
+                            <li>You will not use the platform to distribute spam, malware, or engage in any fraudulent activities.</li>
+                        </ul>
+                    </div>
+
+                    <div id="employers">
+                        <h4 class="legal-section-title">4. For Employers & Recruiters</h4>
+                        <p class="legal-text">Recruiters and companies utilizing JobHub to post vacancies and source candidates agree to the following:</p>
+                        <ul class="legal-text">
+                            <li>All job postings must represent genuine, active employment opportunities.</li>
+                            <li>Listings must not contain discriminatory language or violate any local or international employment laws.</li>
+                            <li>We reserve the right to suspend or terminate employer accounts that engage in deceptive hiring practices or request financial payments from candidates.</li>
+                        </ul>
+                    </div>
+
+                    <div id="intellectual-property">
+                        <h4 class="legal-section-title">5. Intellectual Property</h4>
+                        <p class="legal-text">The Service and its original content (excluding content provided by users), features, and functionality are and will remain the exclusive property of JobHub Inc. and its licensors. Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of JobHub.</p>
+                    </div>
+
+                    <div id="liability">
+                        <h4 class="legal-section-title">6. Limitation of Liability</h4>
+                        <p class="legal-text">In no event shall JobHub, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from (i) your access to or use of or inability to access or use the Service; (ii) any conduct or content of any third party on the Service.</p>
+                    </div>
+
+                    <div id="termination">
+                        <h4 class="legal-section-title">7. Termination</h4>
+                        <p class="legal-text">We may terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms. Upon termination, your right to use the Service will immediately cease.</p>
+                    </div>
+
+                    <div id="governing-law">
+                        <h4 class="legal-section-title">8. Governing Law & Changes</h4>
+                        <p class="legal-text">These Terms shall be governed and construed in accordance with the laws of India, without regard to its conflict of law provisions. We reserve the right, at our sole discretion, to modify or replace these Terms at any time. By continuing to access or use our Service after those revisions become effective, you agree to be bound by the revised terms.</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white mt-5 pt-5 pb-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-4 mb-4 pe-lg-5">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-layer-group text-primary"></i> JobHub</h5>
+                    <p class="small text-secondary lh-lg">The most trusted global platform connecting exceptional talent with world-class organizations. Your career journey starts here.</p>
+                </div>
+                <div class="col-6 col-md-4 mb-4">
+                    <h5 class="mb-3 fs-6 text-uppercase letter-spacing-2 text-white-50">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'home' %}" class="text-decoration-none text-secondary hover-white">Home</a></li>
+                        <li class="mb-2"><a href="{% url 'about' %}" class="text-decoration-none text-secondary hover-white">About Us</a></li>
+                        <li class="mb-2"><a href="{% url 'contact' %}" class="text-decoration-none text-secondary hover-white">Contact Support</a></li>
+                    </ul>
+                </div>
+                <div class="col-6 col-md-4 mb-4">
+                    <h5 class="mb-3 fs-6 text-uppercase letter-spacing-2 text-white-50">Legal</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'privacy' %}" class="text-decoration-none text-secondary hover-white">Privacy Policy</a></li>
+                        <li class="mb-2"><a href="{% url 'terms' %}" class="text-decoration-none text-secondary hover-white">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-secondary my-4">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <div class="small text-secondary">&copy; 2026 JobHub. All rights reserved.</div>
+                <div class="text-secondary fs-5">
+                    <a href="#" class="text-secondary text-decoration-none me-3"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="text-secondary text-decoration-none me-3"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-secondary text-decoration-none"><i class="fab fa-facebook"></i></a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </footer>
+
+</body>
+</html>
