@@ -223,7 +223,7 @@
 
                     <div class="d-flex flex-wrap gap-2 mb-4">
                         <span class="badge-tag"><i class="fas fa-map-marker-alt me-1"></i> {{ job.location }}</span>
-                        <span class="badge-tag text-success bg-success-subtle"><i class="fas fa-wallet me-1"></i> ₹{{ job.salary }}</span>
+                        <span class="badge-tag text-success bg-success-subtle"><i class="fas fa-wallet me-1"></i> {{ job.salary }}</span>
                     </div>
 
                     {% if user.is_authenticated and user.userprofile.role == 'recruiter' %}
