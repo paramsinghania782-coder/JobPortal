@@ -10,6 +10,7 @@ class Job(models.Model):
     location = models.CharField(max_length=50)
     salary = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
+    vacancies = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return self.title

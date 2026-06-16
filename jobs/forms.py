@@ -49,13 +49,14 @@ class UserSignupForm(forms.ModelForm):
 class JobForm(forms.ModelForm):
     class Meta:
         model = Job
-        fields = ['title', 'company', 'location', 'salary', 'description']
+        fields = ['title', 'company', 'location', 'salary', 'description', 'vacancies']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Job Title (e.g. Python Dev)','autocomplete': 'off'}),
             'company': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Company Name','autocomplete': 'off'}),
             'location': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Location (e.g. Remote/Delhi)','autocomplete': 'off'}),
             'salary': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Salary Package','autocomplete': 'off'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Job Details...','autocomplete': 'off'}),
+            'vacancies': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Number of Vacancies', 'min': '1'}),
         }
 
         

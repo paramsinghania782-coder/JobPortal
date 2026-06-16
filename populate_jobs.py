@@ -50,7 +50,8 @@ def populate(N=200):
             company=fake_company,
             location=fake_location,
             description=fake_description,
-            salary=fake_salary
+            salary=fake_salary,
+            vacancies=random.randint(1, 15),
         )
         
     print(f"Successfully {N} fake jobs add ho gayi hain!")
